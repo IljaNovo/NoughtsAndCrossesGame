@@ -19,18 +19,28 @@ public class Game {
 		return this.field;
 	}
 	
-	public void setCross(int x, int y) throws NotEmptyCallExeption {
+	public boolean setCross(int x, int y){
 		if (this.field[x][y] != Symbols.empty) {
-			throw new NotEmptyCallExeption("call is not empty");
+			return false;
 		}
 		this.field[x][y] = Symbols.cross;
+		return true;
 	}
 	
-	public void setNoght(int x, int y) throws NotEmptyCallExeption {
+	public boolean setSymbol(int x, int y, Symbols s){
 		if (this.field[x][y] != Symbols.empty) {
-			throw new NotEmptyCallExeption("call is not empty");
+			return false;
+		}
+		this.field[x][y] = s;
+		return true;
+	}
+	
+	public boolean setNoght(int x, int y){
+		if (this.field[x][y] != Symbols.empty) {
+			return false;
 		}
 		this.field[x][y] = Symbols.nought;
+		return true;
 	}
 	
 	public boolean checkWin(Symbols s) {
