@@ -29,9 +29,9 @@ public class ServerThread extends Thread {
 		output.flush();
 	}
 	
-	private void makeMove(BufferedReader input, PrintWriter output) throws IOException {
+	private void makeMove(String coordsStr, BufferedReader input, PrintWriter output) throws IOException {
 		while(true) {
-			int[] coords = Parser.parseCoords(input.readLine());
+			int[] coords = Parser.parseCoords(coordsStr);
 			if (!game.setSymbol(coords[0], coords[1], this.symbol)) {
 				output.println("Call is not empty...\n0");
 				output.flush();
@@ -56,12 +56,12 @@ public class ServerThread extends Thread {
 		}
 	}
 	
-	private void makeAction(BufferedReader input, PrintWriter output) throws IOException {
+	private void makeAction(String coordStr, BufferedReader input, PrintWriter output) throws IOException {
 		if (this.options.getEndGame() == true) {
 			return;
 		}
 		if (this.options.getActivity() == this.playerID) {
-			this.makeMove(input, output);
+			this.makeMove(coordStr, input, output);
 			this.checkWin();
 			if (this.options.getStateWinOfOpponent() == true) {
 				output.println("You win!\n0");
@@ -92,7 +92,7 @@ public class ServerThread extends Thread {
 			while ((message = input.readLine()) != null) {
 				this.sendInitialNotification(input, output);
 				if (options.getCountConnections() == 2) {
-					this.makeAction(input, output);
+					this.makeAction(message, input, output);
 					this.sendInitialNotification(input, output);
 					if (this.options.getStateWinOfOpponent() == true) {
 						output.println("You lose...\n0");
