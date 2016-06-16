@@ -19,13 +19,8 @@ public class GameTest {
 	@Test
 	public void testSetSymbols() {
 		Game game = new Game(3);
-		
-		try {
-			game.setNoght(1, 1);
-			game.setCross(2, 2);
-		} catch (NotEmptyCallExeption e) {
-			e.printStackTrace();
-		}
+		game.setNoght(1, 1);
+		game.setCross(2, 2);
 		Assert.assertEquals(game.getField()[2][2], Symbols.cross);
 		Assert.assertEquals(game.getField()[1][1], Symbols.nought);
 	}
@@ -33,12 +28,8 @@ public class GameTest {
 	@Test
 	public void testClearField() {
 		Game game = new Game(3);
-		try {
-			game.setNoght(1, 1);
-			game.setCross(2, 2);
-		} catch (NotEmptyCallExeption e) {
-			e.printStackTrace();
-		}
+		game.setNoght(1, 1);
+		game.setCross(2, 2);
 		game.clearField();
 		
 		for (int i = 0; i < 3; ++i) {
@@ -51,26 +42,18 @@ public class GameTest {
 	@Test
 	public void testIsWinHeadDiagonal() {
 		Game game = new Game(3);
-		try {
-			game.setCross(0, 0);
-			game.setCross(1, 1);
-			game.setCross(2, 2);
-		} catch (NotEmptyCallExeption e) {
-			e.printStackTrace();
-		}
+		game.setCross(0, 0);
+		game.setCross(1, 1);
+		game.setCross(2, 2);
 		Assert.assertEquals(game.checkWin(Symbols.cross), true);
 	}
 
 	@Test
 	public void testIsWinSideDiagonal() {
 		Game game = new Game(3);
-		try {
-			game.setNoght(2, 0);
-			game.setNoght(1, 1);
-			game.setNoght(0, 2);
-		} catch (NotEmptyCallExeption e) {
-			e.printStackTrace();
-		}
+		game.setNoght(2, 0);
+		game.setNoght(1, 1);
+		game.setNoght(0, 2);
 		int row = game.getField().length - 1;
 		int column = 0;
 		for (int i = 0; i < game.getField().length; ++i) {
@@ -81,37 +64,25 @@ public class GameTest {
 	@Test
 	public void testIsWinVertikal() {
 		Game game = new Game(3);
-		try {
-			game.setNoght(0, 1);
-			game.setNoght(2, 1);
-			game.setNoght(1, 1);
-		} catch (NotEmptyCallExeption e) {
-			e.printStackTrace();
-		}
+		game.setNoght(0, 1);
+		game.setNoght(2, 1);
+		game.setNoght(1, 1);
 		Assert.assertEquals(game.checkWin(Symbols.nought), true);
 	}
 	
 	@Test
 	public void testIsWinHorizontal() {
 		Game game = new Game(3);
-		try {
-			game.setCross(2, 0);
-			game.setCross(2, 1);
-			game.setCross(2, 2);
-		} catch (NotEmptyCallExeption e) {
-			e.printStackTrace();
-		}
+		game.setCross(2, 0);
+		game.setCross(2, 1);
+		game.setCross(2, 2);
 		Assert.assertEquals(game.checkWin(Symbols.cross), true);
 	}
 	
 	@Test
 	public void testIsNotEmpty() {
 		Game game = new Game(3);
-		try {
-			game.setCross(2, 2);
-			game.setNoght(2, 2);
-		} catch (NotEmptyCallExeption e) {
-			Assert.assertTrue(true);
-		}
+		game.setCross(2, 2);
+		Assert.assertFalse(game.setNoght(2, 2));
 	}
 }
