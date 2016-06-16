@@ -14,7 +14,7 @@ public class Client {
 			BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
 			System.out.println(input.readLine());
-			if(input.readLine() == "1") {
+			if(input.readLine().equals("1")) {
 				try {
 					Thread.currentThread().sleep(5000);
 					return;

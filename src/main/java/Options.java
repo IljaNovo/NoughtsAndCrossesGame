@@ -2,10 +2,30 @@
 public class Options {
 	private int countConnections;
 	private int activity;
+	private boolean isWinOpponent;
+	private boolean endGame;
 	
 	public Options() {
 		this.activity = 1;
 		this.countConnections = 0;
+		this.isWinOpponent = false;
+		this.endGame = false;
+	}
+	
+	public void setEndGame(boolean end) {
+		this.endGame = end;
+	}
+
+	public boolean getEndGame() {
+		return this.endGame;
+	}
+	
+	public void setStateWinOfOpponent(boolean isWin) {
+		this.isWinOpponent = isWin;
+	}
+	
+	public boolean getStateWinOfOpponent() {
+		return this.isWinOpponent;
 	}
 	
 	public int getCountConnections() {
