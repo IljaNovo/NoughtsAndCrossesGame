@@ -14,17 +14,13 @@ public class Client {
 			BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
 			
-//			System.out.println(input.readLine());
-//			if(input.readLine().equals("1")) {
-//				closeConnection(socket, input, output);
-//			}
 			output.println(name);
 			output.flush();
 			
 			BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
 			
 			while(true) {
-				readMessageOfServer(input);
+				readMessageOfServer(input, output, socket);
 				String readerInput = consoleInput.readLine();
 				output.println(readerInput);
 				output.flush();
@@ -43,17 +39,20 @@ public class Client {
 			input.close();
 			output.close();
 			Thread.currentThread().sleep(5000);
-			return;
+			System.exit(0);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private static void readMessageOfServer(BufferedReader input) throws IOException {
+	private static void readMessageOfServer(BufferedReader input, PrintWriter output, Socket socket) throws IOException {
 		while(true) {
 			String message = input.readLine();
 			if (message.equals("0")) {
 				break;
+			}
+			if (message.equals("1")) {
+				closeConnection(socket, input, output);
 			}
 			System.out.println(message);
 		}

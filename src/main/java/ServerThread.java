@@ -5,6 +5,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ServerThread extends Thread {
 	private List<Socket> connections;
@@ -30,8 +32,19 @@ public class ServerThread extends Thread {
 		output.flush();
 	}
 	
+	private boolean checkCoordsStr(String coordsStr) {
+		Pattern p = Pattern.compile("^\\d\\,\\d$");
+		Matcher m = p.matcher(coordsStr);
+		return m.matches();
+	}
+	
 	private void makeMove(String coordsStr, BufferedReader input, PrintWriter output) throws IOException {
 //		while(true) {
+			if (!checkCoordsStr(coordsStr)) {
+				output.println("Coords is not valid...\n0");
+				output.flush();
+				return;
+			}
 			int[] coords = Parser.parseCoords(coordsStr);
 			if (!game.setSymbol(coords[0], coords[1], this.symbol)) {
 				output.println("Call is not empty...\n0");
