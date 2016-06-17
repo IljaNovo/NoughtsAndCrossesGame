@@ -32,6 +32,7 @@ public class Server {
 					options.reduceCountConnections(1);
 				} else {
 					connections.add(connection);
+					initializeGame(game, options);
 					sendTo(connection.getOutputStream(), "Successful connection!");
 					sendNotification(connections, game);
 					new Thread(new ServerThread(connections, game, options)).start();
@@ -47,6 +48,12 @@ public class Server {
 		}
 	}
 	
+	private static void initializeGame(Game game, Options options) {
+		game.changeStatus(false);
+		game.clearField();
+		options.setActivity(1);
+	}
+	
 	private static void sendNotification(List<Socket> connections, Game game) throws IOException {
 		if (connections.size() == 1) {
 			sendTo(connections.get(0).getOutputStream(),
@@ -54,10 +61,10 @@ public class Server {
 		}
 		if (connections.size() == 2) {
 			sendTo(connections.get(0).getOutputStream(),
-					"Start game!\nYour move\n" + Printer.print(game.getField()) + "\n0");
+					"Start game!\nYour sympol is " + Symbols.cross.name() + ".\n\nYour move\n" + Printer.print(game.getField()) + "\n0");
 			
 			sendTo(connections.get(1).getOutputStream(),
-					"Start game!\nMove opponent...\n");
+					"Start game!\nYour sympol is " + Symbols.nought.name() + ".\n\nMove opponent...\n" + Printer.print(game.getField()));
 		}
 	}	
 

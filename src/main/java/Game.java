@@ -1,10 +1,19 @@
 
 public class Game {
 	private Symbols[][] field;
+	private boolean isEndGame = true;
 	
 	public Game(int n) {
 		this.field = new Symbols[n][n];
 		this.clearField();
+	}
+	
+	public void changeStatus(boolean status) {
+		this.isEndGame = status;
+	}
+	
+	public boolean getStatus() {
+		return this.isEndGame;
 	}
 	
 	public void clearField() {
@@ -20,6 +29,10 @@ public class Game {
 	}
 	
 	public boolean setCross(int x, int y){
+		if ((x < 0 || x > this.field.length - 1) ||
+			(y < 0 || y > this.field.length - 1)) {
+			return false;
+		}
 		if (this.field[x][y] != Symbols.empty) {
 			return false;
 		}
@@ -28,6 +41,10 @@ public class Game {
 	}
 	
 	public boolean setSymbol(int x, int y, Symbols s){
+		if ((x < 0 || x > this.field.length - 1) ||
+			(y < 0 || y > this.field.length - 1)) {
+			return false;
+		}
 		if (this.field[x][y] != Symbols.empty) {
 			return false;
 		}
@@ -36,6 +53,10 @@ public class Game {
 	}
 	
 	public boolean setNoght(int x, int y){
+		if ((x < 0 || x > this.field.length - 1) ||
+			(y < 0 || y > this.field.length - 1)) {
+			return false;
+		}
 		if (this.field[x][y] != Symbols.empty) {
 			return false;
 		}

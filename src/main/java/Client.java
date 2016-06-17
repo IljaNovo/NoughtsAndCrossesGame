@@ -54,6 +54,9 @@ public class Client {
 			if (message.equals("1")) {
 				closeConnection(socket, input, output);
 			}
+			if (message.equals("-1")) {
+				closeConnection(socket, input, output);
+			}
 			System.out.println(message);
 		}
 	}
