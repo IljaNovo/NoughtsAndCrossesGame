@@ -49,6 +49,21 @@ public class Game {
 			   checkDiagonals(s);
 	}
 	
+	public boolean checkDraw() {
+		if(checkWin(Symbols.cross) || 
+				checkWin(Symbols.nought)) {
+			return false;
+		}
+		for (int i = 0; i < field.length; ++i) {
+			for (int j = 0; j < field.length; ++j) {
+				if (this.field[i][j] == Symbols.empty) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
 	private boolean checkVerticals(Symbols s) {
 		boolean isWin = true;
 		for (int column = 0; column < this.field.length; ++column) {

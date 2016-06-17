@@ -13,27 +13,19 @@ public class Client {
 			Socket socket = new Socket("localhost", 4444);
 			BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
-			System.out.println(input.readLine());
-			if(input.readLine().equals("1")) {
-				try {
-					Thread.currentThread().sleep(5000);
-					return;
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
+			
+//			System.out.println(input.readLine());
+//			if(input.readLine().equals("1")) {
+//				closeConnection(socket, input, output);
+//			}
 			output.println(name);
 			output.flush();
-			BufferedReader inputConsole = new BufferedReader(new InputStreamReader(System.in));
+			
+			BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
+			
 			while(true) {
-				while(true) {
-					String message = input.readLine();
-					if (message.equals("0")) {
-						break;
-					}
-					System.out.println(message);
-				}
-				String readerInput = inputConsole.readLine();
+				readMessageOfServer(input);
+				String readerInput = consoleInput.readLine();
 				output.println(readerInput);
 				output.flush();
 			}
@@ -41,6 +33,29 @@ public class Client {
 			System.out.println("host is not found");
 		} catch (IOException e) {
 			System.out.println("cannot to conect to the server");
+		}
+	}
+	
+	private static void closeConnection(Socket socket, BufferedReader input, 
+		PrintWriter output) throws IOException {
+		try {
+			socket.close();
+			input.close();
+			output.close();
+			Thread.currentThread().sleep(5000);
+			return;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void readMessageOfServer(BufferedReader input) throws IOException {
+		while(true) {
+			String message = input.readLine();
+			if (message.equals("0")) {
+				break;
+			}
+			System.out.println(message);
 		}
 	}
 }

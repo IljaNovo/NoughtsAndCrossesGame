@@ -1,10 +1,14 @@
 
 import java.awt.HeadlessException;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.omg.CORBA.portable.UnknownException;
 
 public class Server {
@@ -13,10 +17,12 @@ public class Server {
 	public static void main(String[] args) {
 		Game game = new Game(3);
 		Options options = new Options();
+		List<Socket> connections = new ArrayList<Socket>();
 		
 		try {
 			ServerSocket server = new ServerSocket(PORT);
 			System.out.println("Server is started...");
+			
 			int count = 0;
 			while(true) {
 				Socket connection = server.accept();
@@ -25,8 +31,10 @@ public class Server {
 					sendTo(connection.getOutputStream(), "Sorry, server is busy\n1");
 					options.reduceCountConnections(1);
 				} else {
-					sendTo(connection.getOutputStream(), "Successful connection!\n0");
-					new Thread(new ServerThread(connection, game, options)).start();
+					connections.add(connection);
+					sendTo(connection.getOutputStream(), "Successful connection!");
+					sendNotification(connections, game);
+					new Thread(new ServerThread(connections, game, options)).start();
 				}
 			}
 			
@@ -39,6 +47,20 @@ public class Server {
 		}
 	}
 	
+	private static void sendNotification(List<Socket> connections, Game game) throws IOException {
+		if (connections.size() == 1) {
+			sendTo(connections.get(0).getOutputStream(),
+					"Waiting for player...");
+		}
+		if (connections.size() == 2) {
+			sendTo(connections.get(0).getOutputStream(),
+					"Start game!\nYour move\n" + Printer.print(game.getField()) + "\n0");
+			
+			sendTo(connections.get(1).getOutputStream(),
+					"Start game!\nMove opponent...\n");
+		}
+	}	
+
 	private static void sendTo(OutputStream outStream, String message) {
 		PrintWriter out = new PrintWriter(outStream, true);
 		out.println(message);
